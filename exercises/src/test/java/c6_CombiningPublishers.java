@@ -4,6 +4,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Hooks;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
+import reactor.util.function.Tuple2;
 
 import java.util.Objects;
 import java.util.concurrent.ConcurrentLinkedDeque;
@@ -291,9 +292,7 @@ public class c6_CombiningPublishers extends CombiningPublishersBase {
     @Test
     public void major_merger() {
         //todo: feel free to change code as you need
-        Flux<String> microsoftBlizzardCorp =
-                microsoftTitles();
-        blizzardTitles();
+        Flux<String> microsoftBlizzardCorp = Flux.merge(microsoftTitles(), blizzardTitles());
 
         //don't change below this line
         StepVerifier.create(microsoftBlizzardCorp)
@@ -317,9 +316,11 @@ public class c6_CombiningPublishers extends CombiningPublishersBase {
     @Test
     public void car_factory() {
         //todo: feel free to change code as you need
-        Flux<Car> producedCars = null;
-        carChassisProducer();
-        carEngineProducer();
+        Flux<Car> producedCars = Flux.zip(
+            carChassisProducer(),
+            carEngineProducer(),
+            Car::new);
+            
 
         //don't change below this line
         StepVerifier.create(producedCars)
